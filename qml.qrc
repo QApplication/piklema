@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>Screenshot 2024-02-13 155904.jpg</file>
+        <file>Element.qml</file>
+        <file>FooterItem.qml</file>
+        <file>HeaderItem.qml</file>
+        <file>BasicItem.qml</file>
+        <file>LogItem.qml</file>
+    </qresource>
+    <qresource prefix="/fig"/>
+</RCC>
