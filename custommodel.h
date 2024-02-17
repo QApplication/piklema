@@ -77,6 +77,7 @@ private:
     void send();
 
     QMqttClient m_client;
+    void setMqttClientConnectionSettings();
 
     std::unordered_map<QString, QString> default_conn_settings;
 

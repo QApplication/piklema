@@ -4,6 +4,7 @@
 #include <QModelIndex>
 
 #include <QtMqtt/QMqttTopicName>
+#include <QtMqtt/qmqttglobal.h>
 
 
 CustomModel::CustomModel(QObject *parent)
@@ -11,12 +12,7 @@ CustomModel::CustomModel(QObject *parent)
     , m_count(-1)
 {
     setDefaultConnectionSettings();
-
-    m_client.setHostname(host());
-    m_client.setPort(port());
-
-    m_client.setUsername(username());
-    m_client.setPassword(password());
+    setMqttClientConnectionSettings();
 
     connect(&m_client, &QMqttClient::connected, this, &CustomModel::send);
 
@@ -24,10 +20,22 @@ CustomModel::CustomModel(QObject *parent)
         qDebug() << QDateTime::currentDateTime() << m_client.state() << m_client.error();
     });
 
-    connect(&m_client, &QMqttClient::hostnameChanged, [this] () { qDebug() << m_client.hostname(); });
-    connect(&m_client, &QMqttClient::portChanged, [this] () { qDebug() << m_client.port(); });
+    connect(&m_client, &QMqttClient::messageReceived, [this] (const QByteArray &message, const QMqttTopicName &topic) {
+        qDebug() << QDateTime::currentDateTime() << QString(message) << topic.name();
+    });
 
-    connect(&m_client, &QMqttClient::stateChanged, [this] () { qDebug() << m_client.state(); });
+    connect(&m_client, &QMqttClient::messageStatusChanged, [this] (int id, QMqtt::MessageStatus s, const QMqttMessageStatusProperties &properties) {
+        qDebug() << QDateTime::currentDateTime() << id << properties.reason() << (quint8)s ;
+    });
+
+    connect(&m_client, &QMqttClient::messageSent, [this] (int id) {
+        qDebug() << QDateTime::currentDateTime() << id;
+    });
+
+    // connect(&m_client, &QMqttClient::hostnameChanged, [this] () { qDebug() << m_client.hostname(); });
+    // connect(&m_client, &QMqttClient::portChanged, [this] () { qDebug() << m_client.port(); });
+
+    connect(&m_client, &QMqttClient::stateChanged, [this] (QMqttClient::ClientState state) { qDebug() << state; });
 }
 
 CustomModel::~CustomModel()
@@ -57,10 +65,15 @@ void CustomModel::run(QString _host, QString _port, QString _username, QString _
         return;
     }
 
-    m_client.state() == QMqttClient::ClientState::Connected
-        ? send()
-        : m_client.connectToHost()
-        ;
+    if (m_client.state() == QMqttClient::ClientState::Connected) {
+        send();
+        return;
+    }
+
+
+    qDebug() << m_client.hostname() << m_client.port() << m_client.username() << m_client.password();
+
+    m_client.connectToHost();
 }
 
 bool CustomModel::read(const QString &absolutePath)
@@ -145,6 +158,15 @@ void CustomModel::send()        // NOTE: maybe run in another thread ?
     emit countChanged();
 }
 
+void CustomModel::setMqttClientConnectionSettings()
+{
+    m_client.setHostname(host());
+    m_client.setPort(port());
+
+    m_client.setUsername(username());
+    m_client.setPassword(password());
+}
+
 void CustomModel::add_msg_log(const QString &msg)
 {
     if (insertRow(rowCount())) {
@@ -169,7 +191,7 @@ void CustomModel::setDefaultConnectionSettings()
 
     m_topic = "piklema/test";
     emit topicChanged();
-    m_filepath = "";
+    m_filepath = "C:\\Users\\Alex\\Documents\\piklema\\msgpull.txt";
     emit filepathChanged();
 }
 

@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 
     QObject::connect(
         &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
-        []() { QCoreApplication::exit(EXIT_FAILURE); }, Qt::QueuedConnection);
+        [] (const QUrl &url) { QCoreApplication::exit(EXIT_FAILURE); }, Qt::QueuedConnection);
 
     // model
     CustomModel *mdl = new CustomModel();

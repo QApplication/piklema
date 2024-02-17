@@ -38,6 +38,12 @@ Rectangle {
                 btn_run.enabled = !checked
 
                 log_list.visible = checked
+
+                if (checked) {
+                    win.width = 800
+                } else {
+                    win.width = 400
+                }
             }
 
         }
@@ -52,6 +58,25 @@ Rectangle {
 
             implicitWidth: 80
             implicitHeight: 40
+
+            contentItem: Text {
+                text: btn_default.text
+                font: btn_default.font
+                opacity: enabled ? 1.0 : 0.3
+                color: btn_default.down ? "green" : "darkgreen"
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                elide: Text.ElideRight
+            }
+
+            background: Rectangle {
+                implicitWidth: 100
+                implicitHeight: 40
+                opacity: enabled ? 1 : 0.3
+                border.color: btn_default.down ? "green" : "darkgreen"
+                border.width: 1
+                radius: 3
+            }
 
             Layout.alignment: Qt.AlignVCenter
             display: AbstractButton.TextOnly
