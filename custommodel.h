@@ -27,7 +27,8 @@ public:
     ~CustomModel();
 
     Q_INVOKABLE void run(QString _host, QString _port, QString _username, QString _password, QString _topic, QString _filepath);
-    Q_INVOKABLE void  setDefaultConnectionSettings();
+    Q_INVOKABLE void setDefaultConnectionSettings();
+    Q_INVOKABLE QString getCurrentDateTime() const;
 
     Q_INVOKABLE QString host() const;
     Q_INVOKABLE void setHost(const QString &newHost);

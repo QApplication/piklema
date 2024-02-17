@@ -141,7 +141,7 @@ Item {
                         wrapMode: Text.NoWrap
                         antialiasing: true
 
-                        text: "Sat Feb 17 13:33:58 2024 GMT+030"
+                        text: getCurrentDateTime()
                     }
 
                     Item {

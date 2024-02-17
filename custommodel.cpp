@@ -191,8 +191,13 @@ void CustomModel::setDefaultConnectionSettings()
 
     m_topic = "piklema/test";
     emit topicChanged();
-    m_filepath = "C:\\Users\\Alex\\Documents\\piklema\\msgpull.txt";
+    m_filepath = "";
     emit filepathChanged();
+}
+
+QString CustomModel::getCurrentDateTime() const
+{
+    return QDateTime::currentDateTime().toString("ddd MMM d yy hh:mm:ss.zzz UTCtt");
 }
 
 long long CustomModel::count() const
