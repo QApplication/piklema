@@ -2,8 +2,11 @@
 #define CUSTOMMODEL_H
 
 #include <QStringListModel>
+#include <QFile>
 
 #include <QtMqtt/QMqttClient>
+#include "logger.h"
+
 
 
 class CustomModel : public QStringListModel
@@ -25,6 +28,13 @@ class CustomModel : public QStringListModel
 public:
     explicit CustomModel(QObject *parent = nullptr);
     ~CustomModel();
+
+    enum LogParam : int
+    {
+        TimeRole = Qt::UserRole + 1,
+        StatusRole,
+        MsgRole,
+    };
 
     Q_INVOKABLE void run(QString _host, QString _port, QString _username, QString _password, QString _topic, QString _filepath);
     Q_INVOKABLE void setDefaultConnectionSettings();
@@ -50,6 +60,12 @@ public:
 
     long long count() const;
     void setCount(long long newCount);
+
+    void add(const QString &msg);
+
+    // reimplemented
+    QHash<int,QByteArray> roleNames() const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
 
 signals:
@@ -80,10 +96,10 @@ private:
     QMqttClient m_client;
     void setMqttClientConnectionSettings();
 
-    std::unordered_map<QString, QString> default_conn_settings;
+    // logger
+    Logger *mLogger;
 
-    void add_msg_log(const QString& msg);
-
+    Q_DISABLE_COPY(CustomModel)
 };
 
 

@@ -12,9 +12,6 @@ Item {
     Rectangle {
         id: log_rect
 
-        // anchors.leftMargin: 1
-        // anchors.rightMargin: 1
-
         anchors.fill: parent
 
         color: Qt.darker("steelblue", 2)
@@ -98,7 +95,7 @@ Item {
                     anchors.bottomMargin: item_delegate.height === min_height ? 1 : 3
 
 
-                    // status (fake falue)
+                    // status
                     Rectangle {
 
                         id: lm_status
@@ -115,23 +112,14 @@ Item {
 
                         antialiasing: true
 
-                        function msg_status(s) {
-                            return s > 0.75
-                                    ? "red"
-                                    : s < 0.25
-                                      ? "orange"
-                                        : "green";
-                        }
-
-                        color: msg_status(Math.random())
+                        color: status
                     }
 
-                    // timepoint (fake value)
+                    // timepoint
                     Text {
                         id: lm_timepoint
 
                         Layout.minimumWidth: 150
-                        // width: 250
 
                         horizontalAlignment: Qt.AlignLeft
                         verticalAlignment: Qt.AlignVCenter
@@ -141,7 +129,7 @@ Item {
                         wrapMode: Text.NoWrap
                         antialiasing: true
 
-                        text: getCurrentDateTime()
+                        text: time
                     }
 
                     Item {
@@ -162,7 +150,7 @@ Item {
                         opacity: 1
                         wrapMode: Text.WordWrap
                         antialiasing: true
-                        text: display
+                        text: msg
 
                     }
 

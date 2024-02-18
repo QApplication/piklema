@@ -57,7 +57,7 @@ ColumnLayout {
         field_default: ""
         field_placeholder: "write a file (" +
                            (Qt.platform.os === "linux"
-                            ?  "\\home\\piklema\\msg.txt"
+                            ?  "/home/piklema/msg.txt"
                             : Qt.platform.os === "windows"
                               ? "c:\\piklema\\msg.txt"
                               : ""

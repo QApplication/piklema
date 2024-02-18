@@ -10,7 +10,6 @@ qt_standard_project_setup(REQUIRES 6.5)
 
 qt_add_executable(appPiklema
     main.cpp
-    # custommodel.h custommodel.cpp
 )
 
 target_link_libraries(appPiklema PRIVATE
@@ -27,7 +26,7 @@ qt_add_qml_module(appPiklema
     QML_FILES
         Main.qml BasicItem.qml Element.qml FooterItem.qml HeaderItem.qml LogItem.qml
     SOURCES
-        custommodel.h custommodel.cpp
+        custommodel.h custommodel.cpp logger.h logger.cpp
     RESOURCES
         "Screenshot 2024-02-13 155904.jpg"
 )
